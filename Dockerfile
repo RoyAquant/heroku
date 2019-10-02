@@ -50,11 +50,10 @@ RUN tar -xzvf aquantmodel.tar.gz -C /models
 # The only required piece is the model name in order to differentiate endpoints
 ENV MODEL_NAME=aquantmodel
 
-RUN ls
-
 # Create a script that runs the model server so we can use environment variables
 # while also passing in arguments from the docker command line
 RUN echo '#!/bin/bash \n\n\
+cd / \n
 tensorflow_model_server --rest_api_port=${PORT} --model_name=${MODEL_NAME} --model_base_path=${MODEL_BASE_PATH}/${MODEL_NAME} \
 "$@"' > /usr/bin/tf_serving_entrypoint.sh \
 && chmod +x /usr/bin/tf_serving_entrypoint.sh
