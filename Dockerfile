@@ -50,7 +50,7 @@ RUN tar -xzvf aquantmodel.tar.gz -C /models
 # The only required piece is the model name in order to differentiate endpoints
 ENV MODEL_NAME=aquantmodel
 
-RUN echo ls
+RUN ls
 
 # Create a script that runs the model server so we can use environment variables
 # while also passing in arguments from the docker command line
