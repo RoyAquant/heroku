@@ -30,7 +30,7 @@ EXPOSE 8501
 ENV MODEL_BASE_PATH=/models
 RUN mkdir -p ${MODEL_BASE_PATH}
 
-RUN wget https://bucketeer-14c8ab4d-3c8f-427a-a64a-a454a807ab62.s3.amazonaws.com/public/aquantmodel.tar.gz
+RUN wget http://bucketeer-14c8ab4d-3c8f-427a-a64a-a454a807ab62.s3.amazonaws.com/public/saved_model_half_plus_two_cpu.tar.gz
 RUN tar -xzvf aquantmodel.tar.gz -C /models
 
 # The only required piece is the model name in order to differentiate endpoints
