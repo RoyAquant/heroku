@@ -11,6 +11,9 @@ LABEL maintainer="gvasudevan@google.com"
 LABEL tensorflow_serving_github_branchtag=${TF_SERVING_VERSION_GIT_BRANCH}
 LABEL tensorflow_serving_github_commit=${TF_SERVING_VERSION_GIT_COMMIT}
 
+ENV MODEL_NAME=saved_model_half_plus_two_cpu
+ENV MODEL_BASE_PATH=/models
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
         ca-certificates \
         && \
@@ -20,24 +23,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Install TF Serving pkg
 COPY --from=build_image /usr/local/bin/tensorflow_model_server /usr/bin/tensorflow_model_server
 
-# Expose ports
-EXPOSE 8501
-
-# Set where models should be stored in the container
-ENV MODEL_BASE_PATH=/models
 RUN mkdir -p ${MODEL_BASE_PATH}
 
-RUN wget http://bucketeer-14c8ab4d-3c8f-427a-a64a-a454a807ab62.s3.amazonaws.com/public/saved_model_half_plus_two_cpu.tar.gz
-RUN tar -xzvf aquantmodel.tar.gz -C /models
-
-# The only required piece is the model name in order to differentiate endpoints
-ENV MODEL_NAME=aquantmodel
-
-# Create a script that runs the model server so we can use environment variables
-# while also passing in arguments from the docker command line
+RUN wget http://bucketeer-14c8ab4d-3c8f-427a-a64a-a454a807ab62.s3.amazonaws.com/public/${MODEL_NAME}.tar.gz
+RUN tar -xzvf ${MODEL_NAME}.tar.gz -C /models
 
 RUN echo '#!/bin/bash \n\n\
 tensorflow_model_server --rest_api_port=${PORT} \
