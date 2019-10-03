@@ -4,5 +4,4 @@ build:
 run:
     web:
         command:
-            - cd /
             - ./usr/bin/tf_serving_entrypoint.sh
